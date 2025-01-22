@@ -177,8 +177,8 @@ estimateLake <-
     # 1. new function/argument implementation
     # Prompts user for EBA from unique transducers
     ##################################################################
-    EV_filename_parts <- strsplit(sv$EV_filename, "[/]")
-    sv$EVfolder <- sapply(strsplit(sapply(EV_filename_parts, tail, n = 1L), "[/]"), "[", 1)
+    EV_filename_parts <- strsplit(sv$EV_filename, "[\]")
+    sv$EVfolder <- sapply(strsplit(sapply(EV_filename_parts, tail, n = 1L), "[\]"), "[", 1)
 
     sv$dat.source <-paste0(sv$EVfolder, " - ", sv$Frequency, " kHz")
     ev.source.freq <- unique(sv[c("EVfolder", "Frequency")])
@@ -186,15 +186,15 @@ estimateLake <-
     psi.df = data.frame()
     unique.transducer <- paste0(ev.source.freq$EVfolder, " - ", ev.source.freq$Frequency, " kHz" )
     while(x<=length(unique.transducer)) {
-      df <- data.frame(dat.source = NA, psi = 0.008511, EBA = -20.7)
+      df <- data.frame(dat.source = NA, psi = NA, EBA = -NA)
       df$dat.source <- unique.transducer[x]
-      #df$EBA <- as.numeric(svDialogs::dlg_input(GUI = EBA, paste0("Enter Equivalent beam angle in dB for ", unique.transducer[x], ":"))$res)
-     # df$psi <- 10^(df$EBA/10)
+      df$EBA <- as.numeric(svDialogs::dlg_input(GUI = EBA, paste0("Enter Equivalent beam angle in dB for ", unique.transducer[x], ":"))$res)
+      df$psi <- 10^(df$EBA/10)
       psi.df <- rbind(psi.df, df)
       x <- x+1
     }
     x <- NULL
-    write.csv(psi.df, paste0(maindir, substr(strsplit(maindir, "[/]")[[1]][4], 1,2), YEAR, "sources_EBA_psi.csv"), row.names = FALSE)
+    write.csv(psi.df, paste0(maindir, substr(strsplit(maindir, "[/]")[[1]][5], 1,2), YEAR, "sources_EBA_psi.csv"), row.names = FALSE)
     sv$psi <- NA
     sv$psi <- psi.df$psi[match(sv$dat.source, psi.df$dat.source)]
 
