@@ -177,7 +177,7 @@ estimateLake <-
     # 1. new function/argument implementation
     # Prompts user for EBA from unique transducers
     ##################################################################
-    EV_filename_parts <- strsplit(gsub("\\\\", "/", sapply(sv$EV_filename), "/")
+    EV_filename_parts <- strsplit(gsub("\\\\", "/", sapply(sv$EV_filename), "/"))
     EV_filename_parts <- strsplit(sv$EV_filename, "[/]")
     
     sv$EVfolder <- sapply(
